@@ -140,11 +140,11 @@ mean(p== emp2$JobSatisfaction)
 
 
 # Creating Training and Testing Samples
-require(caTools)  # loading caTools library
+require(caTools)  
 library(caTools)
 set.seed(123)   #  set seed to ensure you always have same random numbers generated
-sample = sample.split(emp2, SplitRatio = 0.70) # splits the data in the ratio mentioned in SplitRatio. After splitting marks these rows as logical TRUE and the the remaining are marked as logical FALSE
-train =subset(emp2,sample ==TRUE) # creates a training dataset named train1 with rows which are marked as TRUE
+sample = sample.split(emp2, SplitRatio = 0.70) 
+train =subset(emp2,sample ==TRUE) # creates a training dataset
 test=subset(emp2, sample==FALSE)
 
 library(MASS)
@@ -155,21 +155,6 @@ empLDA
 
 plot(empLDA)
 
-# Try to predict the class from the original data
-# Note ... this is JUST a test to see how this works
-# In practice you will want to use cross-validation!
-p = predict(empLDA, newdata=train[,-15])$class
-p
-
-# Compare the results of the prediction
-table(p, train$JobSatisfaction)
-
-accuracy <- (19+31+148+197)/(19+31+148+197+6+16+10+17+14+17+59+72+100+90+77+122)
-accuracy
-# 0.3969849
-
-mean(p== train$JobSatisfaction)
-# 0.3969849
 
 
 ########## Canonical Correlation Analysis ##################
@@ -245,7 +230,7 @@ loadings_mm$corr.Y.yscores
 wilks_mm = ccaWilks(worklife, jobGains, cc_mm)
 round(wilks_mm, 2)
 
-# Now, let's calcualte the standardized coefficients
+# Now, calcualte the standardized coefficients
 s1 = diag(sqrt(diag(cov(worklife))))
 s1 %*% cc_mm$xcoef
 
@@ -307,40 +292,3 @@ for (i in 1:4){
   
 }
 grid.arrange(plot_1,plot_2,plot_3,plot_4,ncol=2,nrow=2) 
-
-# PCAs Other Available Information
-
-ls(a3)
-
-a3$values
-a3$communality
-a3$rot.mat
-
-#Calculating scores
-
-scores <- a3$scores
-scores_1 <- scores[,1]
-scores_2 <- scores[,2]
-scores_3 <- scores[,3]
-
-min_score <- min(scores_1)
-min_score
-
-max_score <- max(scores_1)
-max_score
-
-min_score <- min(scores_2)
-min_score
-
-max_score <- max(scores_2)
-max_score
-
-min_score <- min(scores_3)
-min_score
-
-max_score <- max(scores_3)
-max_score
-
-summary(scores)
-
-
